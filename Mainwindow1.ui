@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>356</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>76</x>
+      <y>30</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>ADI SOYADI:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="adsoyadtxt">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>30</y>
+      <width>291</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="TC">
+    <property name="geometry">
+     <rect>
+      <x>76</x>
+      <y>80</y>
+      <width>91</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TC KİMLİK:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>80</x>
+      <y>130</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>TELEFON:</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="perradio">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>180</y>
+      <width>91</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>PERSONEL</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="misafirradio">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>180</y>
+      <width>82</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>MİSAFİR</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="tckimliktxt">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>80</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="teltxt">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>130</y>
+      <width>221</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_kaydet">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>260</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#00aaff;&quot;&gt;Kaydet&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>save.png</normaloff>save.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+S</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_ara">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>260</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#00aaff;&quot;&gt;Tc Kimlik Ara&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>binoculars.png</normaloff>binoculars.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+F</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_sil">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>260</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#00aaff;&quot;&gt;Sil&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>fulltrash.png</normaloff>fulltrash.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+S</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_fotocek">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>260</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#00aaff;&quot;&gt;Fotograf Çek&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>capture.png</normaloff>capture.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+S</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="kisi_id_label">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>320</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_temizle">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>260</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="toolTip">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600; color:#00aaff;&quot;&gt;Temizle&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>edit.png</normaloff>edit.png</iconset>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>48</width>
+      <height>48</height>
+     </size>
+    </property>
+    <property name="shortcut">
+     <string>Ctrl+S</string>
+    </property>
+    <property name="default">
+     <bool>false</bool>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="foto_label">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>10</y>
+      <width>250</width>
+      <height>250</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuGiri">
+    <property name="title">
+     <string>Giriş</string>
+    </property>
+    <addaction name="actionKisi_Kayit_Duzenle"/>
+    <addaction name="actionKapi_Giris"/>
+   </widget>
+   <widget class="QMenu" name="menuRaporlama">
+    <property name="title">
+     <string>Raporlama</string>
+    </property>
+    <addaction name="actionTarih_raporla"/>
+    <addaction name="actionGiris_iptal_raporla"/>
+   </widget>
+   <addaction name="menuGiri"/>
+   <addaction name="menuRaporlama"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionKisi_Kayit_Duzenle">
+   <property name="text">
+    <string>Kişi Kayıt_Düzenle</string>
+   </property>
+  </action>
+  <action name="actionKapi_Giris">
+   <property name="text">
+    <string>Kapı Giriş</string>
+   </property>
+  </action>
+  <action name="actionTarih_raporla">
+   <property name="text">
+    <string>Tarih Aralığında Giriş</string>
+   </property>
+  </action>
+  <action name="actionGiris_iptal_raporla">
+   <property name="text">
+    <string>Girişi İptal Olanlar</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
