@@ -73,3 +73,5 @@ while True:
     else:
         print("Kendinize iyi bakın.\n")
         break
+
+        
