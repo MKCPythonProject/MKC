@@ -1,1 +1,1 @@
-# python_inventory
+# omerturk_ornek_proje
