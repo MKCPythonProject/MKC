@@ -195,41 +195,42 @@ class Ui_MainWindow(object):
 
     
     def foto_cek(self):
-        cam = cv2.VideoCapture(0)# Video çekmeye başla
+        cam = cv2.VideoCapture(0,cv2.CAP_DSHOW)# Video çekmeye başla
         detector=cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
         son_kisi_id=kisi.Kisi.son_kisi_id()#foto ismi için aldım
-        f=son_kisi_id[0]+1#1 ekleriz
+        if self.kisi_id_label.text() == "":  # yeni kayıtmı
+            f=son_kisi_id[0]+1#1 ekleriz
+        else:
+            f=self.kisi_id_label.text()#değiştirme ise foto ismi korunur
         sampleNum=0
         while(True):#çekmeye başla
             ret, img = cam.read()
-            img=cv2.flip(img,0)#ters döndürür
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = detector.detectMultiScale(gray, 1.3, 5)
             for (x,y,w,h) in faces:
                 cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
                 sampleNum=sampleNum+1
-
-
                 self.foto_adi="kisi_fotolar/"+ str(f) +'.'+ str(sampleNum) +".jpg"
                 cv2.imwrite(self.foto_adi, gray[y:y+h,x:x+w])
-                cv2.imshow('YUZ TARAMA',img)
+                cv2.imshow('YUZ TARAMA VT KAYIT',img)
 
 
             if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
-            elif sampleNum>10:#20 farklı açı
+            elif sampleNum>10:#10 farklı açı
                 break
-        #renkli foto kaydı
+        #renkli foto kaydı son foto
         ret, img = cam.read()
-        img = cv2.flip(img, 0)
-        self.vt_foto_adi = str(f) + '.' + str(sampleNum) + ".jpg"  # veritabanına kayıt ismi
+
+        self.vt_foto_adi = str(f) + '.' + str(sampleNum) + ".jpg"  # veritabanına yeni kayıt ismi
+
         cv2.imwrite("vt_fotolar/"+self.vt_foto_adi, img)
 
         cam.release()
         cv2.destroyAllWindows()
-        nesne=foto_ogren.foto_ogrenme()
+        nesne=foto_ogren.foto_ogrenme()#fotoları öğrenmeye gönder
         #labela foto yerleştir
-        pixmap = QtGui.QPixmap("kisi_fotolar/"+ self.vt_foto_adi)
+        pixmap = QtGui.QPixmap("vt_fotolar/"+ self.vt_foto_adi)
         pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
         self.foto_label.setPixmap(pixmap_resized)
         
@@ -280,6 +281,10 @@ class Ui_MainWindow(object):
         self.tckimliktxt.setText(str(gelenkisi[2]))
         self.teltxt.setText(str(gelenkisi[3]))
         self.kisi_id_label.setText(str(gelenkisi[0]))
+        self.vt_foto_adi=gelenkisi[4]
+        pixmap = QtGui.QPixmap("vt_fotolar/" + gelenkisi[4])
+        pixmap_resized = pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
+        self.foto_label.setPixmap(pixmap_resized)
         if gelenkisi[5]==1: 
             self.perradio.setChecked(True)
         else:
@@ -301,6 +306,7 @@ class Ui_MainWindow(object):
         self.teltxt.clear()
         self.perradio.setChecked(True)
         self.kisi_id_label.clear()
+        self.foto_label.clear()
 
 
    
