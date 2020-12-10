@@ -6,7 +6,11 @@ import Giris_islemleri as giris_isleri
 import datetime as zaman
 import time
 import random 
-
+import cv2
+import numpy as np
+import Kisiler as kisi
+from datetime import datetime
+from datetime import date
 class Ui_kapigiris(QtWidgets.QMainWindow):
     kisi_id=0
     def __init__(self):
@@ -105,20 +109,49 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                  print(data)
                  #hareket sensörü ile bir ısı geldiğinde önce adam iptalmi bakalım
                  #önce burda yüz tanıma kodları olacak sonra iptalmi vt sorgusu
-               
-                 
-                 #test aşamalı kodlar
-                 listem=[39]
-                 value=random.choice(listem)
-                 self.kisi_id=value
-                 foto="kisi_fotolar/"+str(value)+".jpg"
+                 recognizer = cv2.face.LBPHFaceRecognizer_create()
+                 recognizer.read('ogrenme/ogrenme.yml')
+                 cascadePath = "haarcascade_frontalface_default.xml"
+                 faceCascade = cv2.CascadeClassifier(cascadePath)
+                 cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+                 font = cv2.FONT_HERSHEY_SIMPLEX
+                 while True:
+                     ret, im = cam.read()
+                     gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+                     faces = faceCascade.detectMultiScale(gray, 1.2, 5)
+                     kontrol = False
+                     for (x, y, w, h) in faces:
+                         cv2.rectangle(im, (x, y), (x + w, y + h), (150, 0, 0), 2)
+                         id, conf = recognizer.predict(gray[y:y + h, x:x + w])
+                         if id != None:
+                             self.kisi_ad_soyad = kisi.Kisi.kisi_ad_getir(id)
+                             self.kisi_id=id
+                             cv2.putText(im, self.kisi_ad_soyad, (x + 5, y + h - 5), font, 0.5, (255, 0, 255), 1,
+                                         cv2.LINE_AA)
+                             kontrol = True
+                             time.sleep(3)  # kişiyi tanıyınca 3 saniye bekle çık
+                             break
+
+                     cv2.imshow('KAPI GİRİŞ', im);
+
+                     if (cv2.waitKey(1) == ord('q') or kontrol == True):
+                         if kontrol == True: time.sleep(2)
+                         break
+                 cam.release()
+                 cv2.destroyAllWindows()##kamera serbest
+
+
+
+                 foto="vt_fotolar/"+str(self.kisi_id)+".11"+".jpg"
                  pixmap = QtGui.QPixmap(foto)
                  pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
                  self.foto_label.setPixmap(pixmap_resized)
-                 self.adsoyadtxt.setText("Tuncay SALI")
+                 self.adsoyadtxt.setText(self.kisi_ad_soyad)
             
-          
-                 sayi=giris_isleri.Giris_islemleri().giris_iptal_sorgula(self.kisi_id)
+
+
+
+                 sayi=giris_isleri.Giris_islemleri().giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
                  
                  if sayi[0]==0:#karantinada değilse 14 gün geçmişse
                         data=str(data).lstrip("b'")
@@ -144,13 +177,20 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                         
                         self.vucutisi_lcd.display(data)
                         data=None
-                        time.sleep(1)
-                        self.label_2.clear()
+                        self.temizle()
+
                  else:
                     self.vucutisi_lcd.display(0)
-                    self.label_2.setText("14 gün Geçmediği için Giriş Yapılamaz") 
-                    self.sock.sendto(bytes(2),(self.UDP_IP,self.UDP_PORT))
-             
+                    self.label_2.setText("14 gün Geçmediği için Giriş Yapılamaz")
+                    self.temizle()
+
+    def temizle(self):
+        time.sleep(3)
+        self.label_2.clear()
+        self.adsoyadtxt.clear()
+        self.foto_label.clear()
+        self.vucutisi_lcd.display(0)
+
     def closeEvent(self,event):#soketi kapatıyoz
        self.sock.close()
       
