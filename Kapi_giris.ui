@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <ui version="4.0">
  <class>Kapigiris_window</class>
  <widget class="QMainWindow" name="Kapigiris_window">

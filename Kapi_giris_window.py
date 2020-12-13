@@ -1,6 +1,5 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 import socket#packet_tacer iletişim için
 import threading#iş olulturmak için
 import Giris_islemleri as giris_isleri

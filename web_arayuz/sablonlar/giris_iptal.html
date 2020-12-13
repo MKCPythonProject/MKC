@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<center>
+    <div class="card" style="width: 40em;">
+    <table class="table table-bordered table-striped w-auto">
+        <tr align="center"><td colspan="4">
+            <a href='../' title="Kapı Girişlerini Raporlayın" class="btn btn-primary">Kapı Giriş Raporu</a>
+        </td></tr>
+         <tr align="center"><td colspan="4">
+             <form method="post">
+    {% csrf_token %}
+    {{form | crispy}}
+                 <br>
+             <button type="submit" class="btn btn-danger">Göster</button></form></td></tr>
+        <tr><td colspan="4" align="center"><h4>Kapı Giriş Bilgileri</h4></td></tr>
+
+<tr><th scope="row" class="text-center">TARİH</th>
+   <th scope="row" class="text-center">AD SOYAD</th>
+   <th scope="row" class="text-center">VUCUT ISISI</th>
+</tr>
+{% for giris in giris_iptal_listesi%}
+    <tr align="center">
+
+   <td border> {{ giris.tarih }}</td>
+    <td><a href='../kisi_detay/{{giris.kisi_id}}' title="Kişi Bilgilerine Ulaşın" class="btn btn-primary">{{ giris.adi_soyadi }}</a>
+        </td>
+         <td align="center">{{ giris.v_isi }}</td>
+
+    </tr>
+{% endfor %}
+    </table>
+        </div>
+</center>
+
+
+
+
+
+{% endblock body%}

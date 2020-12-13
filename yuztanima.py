@@ -33,5 +33,4 @@ while True:
         if kontrol==True: time.sleep(3)
         break
 cam.release()
-
 cv2.destroyAllWindows()
