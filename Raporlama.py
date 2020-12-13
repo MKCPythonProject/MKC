@@ -14,11 +14,11 @@ class Raporlama():
             baglanti=vt_baglan.Vt_Connection()
             kayitlar=None
             if kisi_tipi!=0:
-                sorgu="SELECT tarih,saat,adi_soyadi,v_isi,tel FROM kisiler,girisler where  kisiler.kisi_tipi=? and girisler.kisi_id=kisiler.kisi_id and tarih between ? and ?"
+                sorgu="SELECT tarih,saat,adi_soyadi,v_isi,tel FROM icerik_kisiler,icerik_girisler where  icerik_kisiler.kisi_tipi=? and icerik_girisler.kisi_id=icerik_kisiler.kisi_id and tarih between ? and ?"
                 veri=[kisi_tipi,tarih1,tarih2]
                 kayitlar=baglanti.imlec.execute(sorgu,veri)
             else:
-                sorgu="SELECT tarih,saat,adi_soyadi,v_isi,tel FROM girisler,kisiler where girisler.kisi_id=kisiler.kisi_id and tarih between ? and ?"    
+                sorgu="SELECT tarih,saat,adi_soyadi,v_isi,tel FROM icerik_girisler,icerik_kisiler where icerik_girisler.kisi_id=icerik_kisiler.kisi_id and tarih between ? and ?"
                 veri=[str(tarih1),str(tarih2)]
                 kayitlar=baglanti.imlec.execute(sorgu,veri)
             
@@ -29,11 +29,11 @@ class Raporlama():
             baglanti=vt_baglan.Vt_Connection()
             kayitlar=None
             if kisi_tipi!=0:
-                sorgu="SELECT tarih,adi_soyadi,v_isi,tel FROM kisiler,giris_iptal where  kisiler.kisi_tipi=? and giris_iptal.kisi_id=kisiler.kisi_id and (strftime('%d','now')-strftime('%d',tarih))<=14"
+                sorgu="SELECT tarih,adi_soyadi,v_isi,tel FROM icerik_kisiler,icerik_giris_iptal where  icerik_kisiler.kisi_tipi=? and icerik_giris_iptal.kisi_id=icerik_kisiler.kisi_id and (strftime('%d','now')-strftime('%d',tarih))<=14"
                 veri=[kisi_tipi]
                 kayitlar=baglanti.imlec.execute(sorgu,veri)
             else:
-                sorgu="SELECT tarih,adi_soyadi,v_isi,tel FROM giris_iptal,kisiler where giris_iptal.kisi_id=kisiler.kisi_id and (strftime('%d','now')-strftime('%d',tarih))<=14"    
+                sorgu="SELECT tarih,adi_soyadi,v_isi,tel FROM icerik_giris_iptal,icerik_kisiler where icerik_giris_iptal.kisi_id=icerik_kisiler.kisi_id and (strftime('%d','now')-strftime('%d',tarih))<=14"
                 kayitlar=baglanti.imlec.execute(sorgu)
             
             return kayitlar

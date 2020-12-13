@@ -224,13 +224,13 @@ class Ui_MainWindow(object):
 
         self.vt_foto_adi = str(f) + '.' + str(sampleNum) + ".jpg"  # veritabanına yeni kayıt ismi
 
-        cv2.imwrite("vt_fotolar/"+self.vt_foto_adi, img)
-
+        #cv2.imwrite("vt_fotolar/"+self.vt_foto_adi, img)
+        cv2.imwrite("web_arayuz/static/vt_fotolar/" + self.vt_foto_adi, img)
         cam.release()
         cv2.destroyAllWindows()
         nesne=foto_ogren.foto_ogrenme()#fotoları öğrenmeye gönder
         #labela foto yerleştir
-        pixmap = QtGui.QPixmap("vt_fotolar/"+ self.vt_foto_adi)
+        pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+ self.vt_foto_adi)
         pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
         self.foto_label.setPixmap(pixmap_resized)
         
@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
         self.teltxt.setText(str(gelenkisi[3]))
         self.kisi_id_label.setText(str(gelenkisi[0]))
         self.vt_foto_adi=gelenkisi[4]
-        pixmap = QtGui.QPixmap("vt_fotolar/" + gelenkisi[4])
+        pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/" + gelenkisi[4])
         pixmap_resized = pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
         self.foto_label.setPixmap(pixmap_resized)
         if gelenkisi[5]==1: 

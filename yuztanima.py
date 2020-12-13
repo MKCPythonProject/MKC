@@ -9,11 +9,10 @@ recognizer.read('ogrenme/ogrenme.yml')
 cascadePath = "haarcascade_frontalface_default.xml"
 faceCascade = cv2.CascadeClassifier(cascadePath)
 
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 font = cv2.FONT_HERSHEY_SIMPLEX
 while True:
     ret, im =cam.read()
-    im=cv2.flip(im,0)
     gray=cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
     faces=faceCascade.detectMultiScale(gray, 1.2,5)
     kontrol=False

@@ -100,7 +100,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         
     def veri_oku(self):
         while True:
-             self.UDP_IP ="192.168.1.29"
+             self.UDP_IP ="192.168.1.20"
              self.UDP_PORT =1234
              self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) # UDP
              self.sock.bind((self.UDP_IP,self.UDP_PORT))
@@ -140,10 +140,10 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                  cam.release()
                  cv2.destroyAllWindows()##kamera serbest
 
+                 print(str(self.kisi_id))
 
 
-                 foto="vt_fotolar/"+str(self.kisi_id)+".11"+".jpg"
-                 pixmap = QtGui.QPixmap(foto)
+                 pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+str(self.kisi_id)+".11"+".jpg")
                  pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
                  self.foto_label.setPixmap(pixmap_resized)
                  self.adsoyadtxt.setText(self.kisi_ad_soyad)
@@ -151,7 +151,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
 
 
 
-                 sayi=giris_isleri.Giris_islemleri().giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
+                 sayi=giris_isleri.Giris_islemleri().icerik_giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
                  
                  if sayi[0]==0:#karantinada değilse 14 gün geçmişse
                         data=str(data).lstrip("b'")
@@ -161,10 +161,10 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                             
                             self.vucutisi_lcd.setStyleSheet("color: rgb(255, 0, 0);")
                             yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id) 
-                            deger=yenigiris.giris_iptal_kaydet()
+                            deger=yenigiris.icerik_giris_iptal_kaydet()
                             self.label_2.setText("Giriş İptal Kaydı Yapıldı")
 
-                        elif float(data)<37.5:#ısı uygunsa veritabanı girislere kaydet
+                        elif float(data)<37.5:#ısı uygunsa veritabanı girisler_girisler kaydet
                             self.vucutisi_lcd.setStyleSheet("color: rgb(4, 211, 53);")
                             yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id) 
                             deger=yenigiris.giris_kaydet()
@@ -190,7 +190,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.adsoyadtxt.clear()
         self.foto_label.clear()
         self.vucutisi_lcd.display(0)
-
+        self.sock.close()
     def closeEvent(self,event):#soketi kapatıyoz
        self.sock.close()
       

@@ -17,7 +17,7 @@ class Kisi():
         kontrol="Kayıt Başarılı"
         try:
               baglanti=vt_baglan.Vt_Connection()
-              sorgu = "INSERT INTO kisiler (adi_soyadi,tckimlik,tel,foto,kisi_tipi) VALUES(?,?,?,?,?)"
+              sorgu = "INSERT INTO icerik_kisiler (adi_soyadi,tckimlik,tel,foto,kisi_tipi) VALUES(?,?,?,?,?)"
               veri = [self.adi_soyadi, self.tckimlik, self.tel, self.foto, self.kisi_tipi]
               baglanti.imlec.execute(sorgu, veri)
               baglanti.vt.commit()
@@ -34,7 +34,7 @@ class Kisi():
     @classmethod
     def kisi_bul(cls,tckimlik):
         baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT * FROM kisiler where tckimlik=?"
+        sorgu="SELECT * FROM icerik_kisiler where tckimlik=?"
         veri=[tckimlik]
         baglanti.imlec.execute(sorgu, veri)
         kisibilgisi= baglanti.imlec.fetchone()
@@ -44,7 +44,7 @@ class Kisi():
     @classmethod
     def kisi_ad_getir(cls,kisi_id):
         baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT adi_soyadi FROM kisiler where kisi_id=?"
+        sorgu="SELECT adi_soyadi FROM icerik_kisiler where kisi_id=?"
         veri=[kisi_id]
         baglanti.imlec.execute(sorgu, veri)
         kisibilgisi= baglanti.imlec.fetchone()
@@ -55,7 +55,7 @@ class Kisi():
         kontrol="Kayıt Değiştirildi"
         try:
               baglanti=vt_baglan.Vt_Connection()
-              sorgu = "UPDATE kisiler SET adi_soyadi=?, tckimlik=?, tel=?, foto=?, kisi_tipi=? WHERE kisi_id=?"
+              sorgu = "UPDATE icerik_kisiler SET adi_soyadi=?, tckimlik=?, tel=?, foto=?, kisi_tipi=? WHERE kisi_id=?"
               veri = [self.adi_soyadi, self.tckimlik, self.tel, self.foto, self.kisi_tipi,self.kisi_id]
               baglanti.imlec.execute(sorgu, veri)
               baglanti.vt.commit()
@@ -73,7 +73,7 @@ class Kisi():
         kontrol="Kayıt Silindi"
         try:
             baglanti=vt_baglan.Vt_Connection()
-            sorgu="delete from kisiler where kisi_id=?"
+            sorgu="delete from icerik_kisiler where kisi_id=?"
             veri=[kisi_id]
             baglanti.imlec.execute(sorgu, veri)
             baglanti.vt.commit()
@@ -86,7 +86,7 @@ class Kisi():
     @classmethod
     def son_kisi_id(cls):
         baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT max(kisi_id) FROM kisiler"
+        sorgu="SELECT max(kisi_id) FROM icerik_kisiler"
         baglanti.imlec.execute(sorgu)
         sayi= baglanti.imlec.fetchone()
         baglanti.vt.close()

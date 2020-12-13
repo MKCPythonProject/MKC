@@ -12,7 +12,7 @@ class Giris_islemleri():
         kontrol="Kayıt Başarılı"
         try:
               baglanti=vt_baglan.Vt_Connection()
-              sorgu = "INSERT INTO girisler (tarih,saat,v_isi,kisi_id) VALUES(?,?,?,?)"
+              sorgu = "INSERT INTO icerik_girisler (tarih,saat,v_isi,kisi_id) VALUES(?,?,?,?)"
               veri = [str(datetime.datetime.now().date()),str(datetime.datetime.now().time()), self.vucut_isi, self.kisi_id]
               baglanti.imlec.execute(sorgu, veri)
               baglanti.vt.commit()
@@ -24,11 +24,11 @@ class Giris_islemleri():
 
         return kontrol
         
-    def giris_iptal_kaydet(self):
+    def icerik_giris_iptal_kaydet(self):
         kontrol="Kayıt Başarılı"
         try:
               baglanti=vt_baglan.Vt_Connection()
-              sorgu = "INSERT INTO giris_iptal (tarih,v_isi,kisi_id) VALUES(?,?,?)"
+              sorgu = "INSERT INTO icerik_giris_iptal (tarih,v_isi,kisi_id) VALUES(?,?,?)"
               veri = [str(datetime.datetime.now().date()), self.vucut_isi, self.kisi_id]
               baglanti.imlec.execute(sorgu, veri)
               baglanti.vt.commit()
@@ -41,9 +41,9 @@ class Giris_islemleri():
         return kontrol
     
     @classmethod
-    def giris_iptal_sorgula(cls,kisi_id):
+    def icerik_giris_iptal_sorgula(cls,kisi_id):
         baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT count(*) from Giris_iptal where kisi_id=? and (strftime('%d','now')-strftime('%d',tarih))<=14"
+        sorgu="SELECT count(*) from icerik_giris_iptal where kisi_id=? and (strftime('%d','now')-strftime('%d',tarih))<=14"
         veri=[kisi_id]
         baglanti.imlec.execute(sorgu, veri)
         sayi= baglanti.imlec.fetchone()
@@ -53,7 +53,7 @@ class Giris_islemleri():
     @classmethod
     def giris_yapan_kisi_sayisi(cls):
         baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT count(*) from girisler where tarih=?"
+        sorgu="SELECT count(*) from icerik_girisler where tarih=?"
         veri=[str(datetime.datetime.now().date())]
         baglanti.imlec.execute(sorgu, veri)
         sayi= baglanti.imlec.fetchone()
