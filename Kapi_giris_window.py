@@ -94,14 +94,17 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         
        #designer sonrası eklenen
         giris_sayi=giris_isleri.Giris_islemleri().giris_yapan_kisi_sayisi()
+        self.udp_bilgisi = giris_isleri.Giris_islemleri.udp_bilgi_getir()
         self.giris_sayisi_lcd.display(giris_sayi[0])
+        #tüm atamalar thread önce olmalı
         self.t1 = threading.Thread(target=self.veri_oku)
         self.t1.start()
-        
+
+
     def veri_oku(self):
         while True:
-             self.UDP_IP ="192.168.1.20"
-             self.UDP_PORT =1234
+             self.UDP_IP =self.udp_bilgisi[0]
+             self.UDP_PORT =self.udp_bilgisi[1]
              self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) # UDP
              self.sock.bind((self.UDP_IP,self.UDP_PORT))
              data, addr = self.sock.recvfrom(1024) # buffer size is 1024 bytes

@@ -59,4 +59,14 @@ class Giris_islemleri():
         sayi= baglanti.imlec.fetchone()
         baglanti.vt.close()
         return sayi
+
+    @classmethod
+    def udp_bilgi_getir(cls):
+        baglanti=vt_baglan.Vt_Connection()
+        sorgu="SELECT * from udp_connect"
+        baglanti.imlec.execute(sorgu)
+        udp_veri= baglanti.imlec.fetchone()
+        baglanti.vt.close()
+        return udp_veri
+
     

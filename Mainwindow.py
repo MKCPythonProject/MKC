@@ -8,6 +8,7 @@
 import Kisiler as kisi# kişiler sınıfı içeri alındı
 import Kapi_giris_window as kapi_giris_window#kapi giris modulü
 import Tarih_giris_rapor_window as Tarih_giris_window
+import udp_socket_window as Udp_socket_window
 from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
@@ -132,6 +133,8 @@ class Ui_MainWindow(object):
         self.menuGiri.setObjectName("menuGiri")
         self.menuRaporlama = QtWidgets.QMenu(self.menubar)
         self.menuRaporlama.setObjectName("menuRaporlama")
+        self.menuUDP_Socket_Ayarlar = QtWidgets.QMenu(self.menubar)
+        self.menuUDP_Socket_Ayarlar.setObjectName("menuUDP_Socket_Ayarlar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -144,11 +147,15 @@ class Ui_MainWindow(object):
         self.actionTarih_raporla.setObjectName("actionTarih_raporla")
         self.actionGiris_iptal_raporla = QtWidgets.QAction(MainWindow)
         self.actionGiris_iptal_raporla.setObjectName("actionGiris_iptal_raporla")
+        self.actionIp_Port_degistir = QtWidgets.QAction(MainWindow)
+        self.actionIp_Port_degistir.setObjectName("actionIp_Port_degistir")
         self.menuGiri.addAction(self.actionKisi_Kayit_Duzenle)
         self.menuGiri.addAction(self.actionKapi_Giris)
         self.menuRaporlama.addAction(self.actionTarih_raporla)
+        self.menuUDP_Socket_Ayarlar.addAction(self.actionIp_Port_degistir)
         self.menubar.addAction(self.menuGiri.menuAction())
         self.menubar.addAction(self.menuRaporlama.menuAction())
+        self.menubar.addAction(self.menuUDP_Socket_Ayarlar.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -173,10 +180,13 @@ class Ui_MainWindow(object):
         self.btn_temizle.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.menuGiri.setTitle(_translate("MainWindow", "Giriş"))
         self.menuRaporlama.setTitle(_translate("MainWindow", "Raporlama"))
+        self.menuUDP_Socket_Ayarlar.setTitle(_translate("MainWindow", "UDP Socket Ayarları"))
         self.actionKisi_Kayit_Duzenle.setText(_translate("MainWindow", "Kişi Kayıt_Düzenle"))
         self.actionKapi_Giris.setText(_translate("MainWindow", "Kapı Giriş"))
         self.actionTarih_raporla.setText(_translate("MainWindow", "Giriş Raporları"))
         self.actionGiris_iptal_raporla.setText(_translate("MainWindow", "Girişi İptal Olanlar"))
+        self.actionIp_Port_degistir.setText(_translate("MainWindow", "Ip_Port Değiştir"))
+
 
 
 #designer sonrası benim kodlar burdan başlıyor
@@ -190,7 +200,8 @@ class Ui_MainWindow(object):
         self.actionKapi_Giris.triggered.connect(self.kapi_giris_ac)
         self.actionTarih_raporla.triggered.connect(self.tarih_raporla_ac)
         self.btn_fotocek.clicked.connect(self.foto_cek)
-
+        self.udp_socket_pencere= Udp_socket_window.Ui_Ud_psocket_window()
+        self.actionIp_Port_degistir.triggered.connect(self.udp_ayar_ac)
   
 
     
@@ -249,7 +260,9 @@ class Ui_MainWindow(object):
         
     def tarih_raporla_ac(self):
         self.Tarih_giris_rapor_pencere.show()
-        
+
+    def udp_ayar_ac(self):
+        self.udp_socket_pencere.show()
     
         
     def kayit_islemi(self):
