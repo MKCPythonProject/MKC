@@ -74,7 +74,7 @@ class Kisi():
     
     @classmethod
     def kisi_sil(cls,kisi_id):
-        kontrol="Kayıt Silindi"
+        kontrol = "Kayıt Silindi"
         try:
             baglanti=vt_baglan.Vt_Connection()
             sorgu="delete from icerik_kisiler where kisi_id=?"
@@ -82,10 +82,11 @@ class Kisi():
             baglanti.imlec.execute(sorgu, veri)
             baglanti.vt.commit()
             baglanti.vt.close()
-
-           
+            for i in range(1,10):
+                os.remove("kisi_fotolar/" +str(kisi_id) +"."+str(i)+".jpg")
+            os.remove("web_arayuz/static/vt_fotolar/"+str(kisi_id) +".9.jpg")
         except:
-             kontrol="!!KAYIT SİLİNEMEDİ.Bilinmeyen Hata."
+            kontrol="!!KAYIT SİLİNEMEDİ.Bilinmeyen Hata."
         return kontrol
     
         
