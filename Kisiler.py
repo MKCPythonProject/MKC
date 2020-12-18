@@ -15,6 +15,7 @@ class Kisi():
               
     def kisi_kaydet(self):
         kontrol="Kayıt Başarılı"
+
         try:
               baglanti=vt_baglan.Vt_Connection()
               sorgu = "INSERT INTO icerik_kisiler (adi_soyadi,tckimlik,tel,foto,kisi_tipi) VALUES(?,?,?,?,?)"
@@ -27,7 +28,7 @@ class Kisi():
         except AttributeError:
             kontrol="!!KAYIT BAŞARISIZ.Veritabanına Bağlanılamıyor."
         except:
-            kontrol="!!KAYIT BAŞARISIZ.Bilinmeyen Hata."
+            kontrol = "!!KAYIT BAŞARISIZ.Foto Çekimi Yapmalısınız veya Bilinmeyen hata."
 
         return kontrol
     
@@ -42,14 +43,17 @@ class Kisi():
         return kisibilgisi
 
     @classmethod
-    def kisi_ad_getir(cls,kisi_id):
-        baglanti=vt_baglan.Vt_Connection()
-        sorgu="SELECT adi_soyadi FROM icerik_kisiler where kisi_id=?"
-        veri=[kisi_id]
-        baglanti.imlec.execute(sorgu, veri)
-        kisibilgisi= baglanti.imlec.fetchone()
-        baglanti.vt.close()
-        return kisibilgisi[0]
+    def kisi_ad_getir(cls,kisi_id):#fotolara eklemek için kişi adlarını
+        try:
+            baglanti=vt_baglan.Vt_Connection()
+            sorgu="SELECT adi_soyadi FROM icerik_kisiler where kisi_id=?"
+            veri=[kisi_id]
+            baglanti.imlec.execute(sorgu, veri)
+            kisibilgisi= baglanti.imlec.fetchone()
+            baglanti.vt.close()
+            return kisibilgisi[0]
+        except TypeError:
+            return "yok"
 
     def kisi_degistir(self):
         kontrol="Kayıt Değiştirildi"
@@ -77,7 +81,13 @@ class Kisi():
             veri=[kisi_id]
             baglanti.imlec.execute(sorgu, veri)
             baglanti.vt.commit()
+            sorgu = "SELECT foto FROM icerik_kisiler where kisi_id=?"
+            veri = [kisi_id]
+            baglanti.imlec.execute(sorgu, veri)
+            kisibilgisi = baglanti.imlec.fetchone()
             baglanti.vt.close()
+
+            os.remove("kisi_fotolar/",kisi_id,"")
         except:
              kontrol="!!KAYIT SİLİNEMEDİ.Bilinmeyen Hata."
         return kontrol

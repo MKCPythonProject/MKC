@@ -114,7 +114,7 @@ class Ui_Tarih_Giris_Rapor(QtWidgets.QMainWindow):
         self.dateEdit.setDate(datetime.date.today())
         self.dateEdit_2.setDate(datetime.date.today())
         self.iptal_check.clicked.connect(self.iptal_cek)
-    
+        self.yazdir()
     def iptal_cek(self):#iptal check seçili ise tarihleri kapar
         if self.iptal_check.isChecked()==True:
             self.dateEdit.hide()

@@ -97,19 +97,22 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.udp_bilgisi = giris_isleri.Giris_islemleri.udp_bilgi_getir()
         self.giris_sayisi_lcd.display(giris_sayi[0])
         #tüm atamalar thread önce olmalı
+
         self.t1 = threading.Thread(target=self.veri_oku)
         self.t1.start()
 
 
+
     def veri_oku(self):
         while True:
+
              self.UDP_IP =self.udp_bilgisi[0]
              self.UDP_PORT =self.udp_bilgisi[1]
              self.sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM) # UDP
-             self.sock.bind((self.UDP_IP,self.UDP_PORT))
+             x=self.sock.bind((self.UDP_IP,self.UDP_PORT))
              data, addr = self.sock.recvfrom(1024) # buffer size is 1024 bytes
-             if data is not None: 
-                 print(data)
+             if data is not None:
+
                  #hareket sensörü ile bir ısı geldiğinde önce adam iptalmi bakalım
                  #önce burda yüz tanıma kodları olacak sonra iptalmi vt sorgusu
                  recognizer = cv2.face.LBPHFaceRecognizer_create()
@@ -128,6 +131,8 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                          id, conf = recognizer.predict(gray[y:y + h, x:x + w])
                          if id != None:
                              self.kisi_ad_soyad = kisi.Kisi.kisi_ad_getir(id)
+                             if self.kisi_ad_soyad=="yok":
+                               self.label_2.setText("Aradığınız Kişi Yok kayıt edin veya Bilgilerini Güncelleyin")
                              self.kisi_id=id
                              cv2.putText(im, self.kisi_ad_soyad, (x + 5, y + h - 5), font, 0.5, (255, 0, 255), 1,
                                          cv2.LINE_AA)
@@ -143,33 +148,33 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                  cam.release()
                  cv2.destroyAllWindows()##kamera serbest
 
-                 print(str(self.kisi_id))
+
 
 
                  pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+str(self.kisi_id)+".11"+".jpg")
                  pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
                  self.foto_label.setPixmap(pixmap_resized)
                  self.adsoyadtxt.setText(self.kisi_ad_soyad)
-            
+
 
 
 
                  sayi=giris_isleri.Giris_islemleri().icerik_giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
-                 
+
                  if sayi[0]==0:#karantinada değilse 14 gün geçmişse
                         data=str(data).lstrip("b'")
                         data=data.rstrip("'")
                         if float(data)>=37.5:
                             #vucut ısısı 37.5 üzerinde ise iptal alanı=1
-                            
+
                             self.vucutisi_lcd.setStyleSheet("color: rgb(255, 0, 0);")
-                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id) 
+                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
                             deger=yenigiris.icerik_giris_iptal_kaydet()
                             self.label_2.setText("Giriş İptal Kaydı Yapıldı")
 
                         elif float(data)<37.5:#ısı uygunsa veritabanı girisler_girisler kaydet
                             self.vucutisi_lcd.setStyleSheet("color: rgb(4, 211, 53);")
-                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id) 
+                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
                             deger=yenigiris.giris_kaydet()
                             self.label_2.setText("Giriş Kaydı Yapıldı")
                             giris_sayi=giris_isleri.Giris_islemleri().giris_yapan_kisi_sayisi()
@@ -177,7 +182,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                             print(deger)
                         else:
                             self.vucutisi_lcd.setStyleSheet("color: rgb(0, 0, 255);")
-                        
+
                         self.vucutisi_lcd.display(data)
                         data=None
                         self.temizle()
@@ -194,8 +199,11 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.foto_label.clear()
         self.vucutisi_lcd.display(0)
         self.sock.close()
-    def closeEvent(self,event):#soketi kapatıyoz
-       self.sock.close()
-      
 
-        
+
+    def closeEvent(self,event):#soketi kapatıyoz
+        self.t1.kill()
+        self.t1.join()
+        self.sock.close()
+
+

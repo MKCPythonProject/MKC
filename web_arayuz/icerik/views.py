@@ -12,8 +12,6 @@ def girisler_index(request, adi_soyadi=None):
         tarih1= form.cleaned_data["tarih1"]
         tarih2=form.cleaned_data["tarih2"]
         print(tarih1)
-        #start_date = datetime.date(2020,12,1)
-        #end_date = datetime.date(2020,12,13)
         Giris_listesi=Girisler.objects.filter(tarih__lte=tarih2).filter(tarih__gte=tarih1)
     else:
          Giris_listesi=Girisler.objects.all()

@@ -12,8 +12,9 @@ import udp_socket_window as Udp_socket_window
 from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
+import grafik_ciz as grafik
 import foto_ogrenme as foto_ogren
-class Ui_MainWindow(object):
+class Ui_MainWindow(QtWidgets.QMainWindow):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 356)
@@ -149,9 +150,12 @@ class Ui_MainWindow(object):
         self.actionGiris_iptal_raporla.setObjectName("actionGiris_iptal_raporla")
         self.actionIp_Port_degistir = QtWidgets.QAction(MainWindow)
         self.actionIp_Port_degistir.setObjectName("actionIp_Port_degistir")
+        self.actionGrafik = QtWidgets.QAction(MainWindow)
+        self.actionGrafik.setObjectName("actionGrafik")
         self.menuGiri.addAction(self.actionKisi_Kayit_Duzenle)
         self.menuGiri.addAction(self.actionKapi_Giris)
         self.menuRaporlama.addAction(self.actionTarih_raporla)
+        self.menuRaporlama.addAction(self.actionGrafik)
         self.menuUDP_Socket_Ayarlar.addAction(self.actionIp_Port_degistir)
         self.menubar.addAction(self.menuGiri.menuAction())
         self.menubar.addAction(self.menuRaporlama.menuAction())
@@ -168,15 +172,20 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "TELEFON:"))
         self.perradio.setText(_translate("MainWindow", "PERSONEL"))
         self.misafirradio.setText(_translate("MainWindow", "MİSAFİR"))
-        self.btn_kaydet.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Kaydet</span></p></body></html>"))
+        self.btn_kaydet.setToolTip(_translate("MainWindow",
+                                              "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Kaydet</span></p></body></html>"))
         self.btn_kaydet.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.btn_ara.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Tc Kimlik Ara</span></p></body></html>"))
+        self.btn_ara.setToolTip(_translate("MainWindow",
+                                           "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Tc Kimlik Ara</span></p></body></html>"))
         self.btn_ara.setShortcut(_translate("MainWindow", "Ctrl+F"))
-        self.btn_sil.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Sil</span></p></body></html>"))
+        self.btn_sil.setToolTip(_translate("MainWindow",
+                                           "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Sil</span></p></body></html>"))
         self.btn_sil.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.btn_fotocek.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Fotograf Çek</span></p></body></html>"))
+        self.btn_fotocek.setToolTip(_translate("MainWindow",
+                                               "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Fotograf Çek</span></p></body></html>"))
         self.btn_fotocek.setShortcut(_translate("MainWindow", "Ctrl+S"))
-        self.btn_temizle.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Temizle</span></p></body></html>"))
+        self.btn_temizle.setToolTip(_translate("MainWindow",
+                                               "<html><head/><body><p><span style=\" font-size:10pt; font-weight:600; color:#00aaff;\">Temizle</span></p></body></html>"))
         self.btn_temizle.setShortcut(_translate("MainWindow", "Ctrl+S"))
         self.menuGiri.setTitle(_translate("MainWindow", "Giriş"))
         self.menuRaporlama.setTitle(_translate("MainWindow", "Raporlama"))
@@ -186,7 +195,7 @@ class Ui_MainWindow(object):
         self.actionTarih_raporla.setText(_translate("MainWindow", "Giriş Raporları"))
         self.actionGiris_iptal_raporla.setText(_translate("MainWindow", "Girişi İptal Olanlar"))
         self.actionIp_Port_degistir.setText(_translate("MainWindow", "Ip_Port Değiştir"))
-
+        self.actionGrafik.setText(_translate("MainWindow", "Grafik"))
 
 
 #designer sonrası benim kodlar burdan başlıyor
@@ -195,15 +204,16 @@ class Ui_MainWindow(object):
         self.btn_temizle.clicked.connect(self.temizle)
         self.btn_sil.clicked.connect(self.kayit_sil)
         self.kisi_id_label.hide()
-        self.kapi_giris_pencere=kapi_giris_window.Ui_kapigiris()
         self.Tarih_giris_rapor_pencere=Tarih_giris_window.Ui_Tarih_Giris_Rapor()
         self.actionKapi_Giris.triggered.connect(self.kapi_giris_ac)
         self.actionTarih_raporla.triggered.connect(self.tarih_raporla_ac)
         self.btn_fotocek.clicked.connect(self.foto_cek)
         self.udp_socket_pencere= Udp_socket_window.Ui_Ud_psocket_window()
         self.actionIp_Port_degistir.triggered.connect(self.udp_ayar_ac)
-  
+        self.actionGrafik.triggered.connect(self.grafik_ac)
 
+    def grafik_ac(self):
+        grafik.grafik_ciz()
     
     def foto_cek(self):
         cam = cv2.VideoCapture(0,cv2.CAP_DSHOW)# Video çekmeye başla
@@ -256,8 +266,10 @@ class Ui_MainWindow(object):
 
         
     def kapi_giris_ac(self):
+
+        self.kapi_giris_pencere = kapi_giris_window.Ui_kapigiris()
         self.kapi_giris_pencere.show()
-        
+
     def tarih_raporla_ac(self):
         self.Tarih_giris_rapor_pencere.show()
 
@@ -286,6 +298,8 @@ class Ui_MainWindow(object):
                 if deger=="Kayıt Değiştirildi":  self.temizle()     
         except ValueError:
              QtWidgets.QMessageBox.about(  self.centralwidget, "Uyarı", "Telefon ve Tc Kimlik Sayı Olmalı")
+        except:
+            QtWidgets.QMessageBox.about(self.centralwidget, "Uyarı", "Ad Soyad ve Foto Gerekli Boş olamaz")
    
     def kayit_ara(self):
       try:
@@ -327,6 +341,7 @@ class Ui_MainWindow(object):
      try:
         deger=kisi.Kisi.kisi_sil(int(self.kisi_id_label.text()))
         QtWidgets.QMessageBox.about(self.centralwidget, "Bursa_MKC", deger)
+        if deger=="Kayıt Silindi":self.temizle()
      except ValueError:
           QtWidgets.QMessageBox.about(self.centralwidget, "Uyarı", "Silmek için Öcelikle Tc Numarası ile kayıdı arayınız")
      except:

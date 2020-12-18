@@ -6,11 +6,11 @@ class foto_ogrenme():
     def __init__(self):
         recognizer = cv2.face.LBPHFaceRecognizer_create()
         self.detector= cv2.CascadeClassifier("haarcascade_frontalface_default.xml");
-        faces,Ids = self.getImagesAndLabels('kisi_fotolar') 
+        faces,Ids = self.resim_getir('kisi_fotolar')
         recognizer.train(faces, np.array(Ids))
         recognizer.save('ogrenme/ogrenme.yml') 
         
-    def getImagesAndLabels(self,path): 
+    def resim_getir(self,path):
     
         imagePaths=[os.path.join(path,f) for f in os.listdir(path)] 
         faceSamples=[]
