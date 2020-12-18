@@ -81,13 +81,9 @@ class Kisi():
             veri=[kisi_id]
             baglanti.imlec.execute(sorgu, veri)
             baglanti.vt.commit()
-            sorgu = "SELECT foto FROM icerik_kisiler where kisi_id=?"
-            veri = [kisi_id]
-            baglanti.imlec.execute(sorgu, veri)
-            kisibilgisi = baglanti.imlec.fetchone()
             baglanti.vt.close()
 
-            os.remove("kisi_fotolar/",kisi_id,"")
+           
         except:
              kontrol="!!KAYIT SİLİNEMEDİ.Bilinmeyen Hata."
         return kontrol
