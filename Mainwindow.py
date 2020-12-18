@@ -238,7 +238,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
             if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
-            elif sampleNum>10:#10 farklı açı
+            elif sampleNum>8:#9 farklı açı
                 break
         #renkli foto kaydı son foto
         ret, img = cam.read()
