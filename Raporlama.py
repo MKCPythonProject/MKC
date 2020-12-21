@@ -24,6 +24,7 @@ class Raporlama():
             
             return kayitlar
         
+        
     @classmethod
     def iptal_Raporla(cls,kisi_tipi):
             baglanti=vt_baglan.Vt_Connection()
