@@ -151,7 +151,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
 
 
 
-                 pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+str(self.kisi_id)+".11"+".jpg")
+                 pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+str(self.kisi_id)+".9"+".jpg")
                  pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
                  self.foto_label.setPixmap(pixmap_resized)
                  self.adsoyadtxt.setText(self.kisi_ad_soyad)
