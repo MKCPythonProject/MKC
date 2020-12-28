@@ -91,7 +91,7 @@ class Kisi():
     
         
     @classmethod
-    def son_kisi_id(cls):
+    def son_kisi_id(cls):#resimlere id vermek için
         baglanti=vt_baglan.Vt_Connection()
         sorgu="SELECT max(kisi_id) FROM icerik_kisiler"
         baglanti.imlec.execute(sorgu)
