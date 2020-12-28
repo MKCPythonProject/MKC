@@ -50,6 +50,7 @@ class Giris_islemleri():
         baglanti.vt.close()
         return sayi
     
+    
     @classmethod
     def giris_yapan_kisi_sayisi(cls):
         baglanti=vt_baglan.Vt_Connection()

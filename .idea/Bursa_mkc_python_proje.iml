@@ -9,4 +9,5 @@
     <option name="versionSpecifier" value="Greater or equal (&gt;=x.y.z)" />
     <option name="keepMatchingSpecifier" value="false" />
   </component>
+  
 </module>

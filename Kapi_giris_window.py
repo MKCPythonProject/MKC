@@ -199,6 +199,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.foto_label.clear()
         self.vucutisi_lcd.display(0)
         self.sock.close()
+        
 
 
     def closeEvent(self,event):#soketi kapatıyoz
