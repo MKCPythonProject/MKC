@@ -158,39 +158,39 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
 
 
 
+                 if self.kisi_ad_soyad!="yok":
+                     sayi=giris_isleri.Giris_islemleri().icerik_giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
 
-                 sayi=giris_isleri.Giris_islemleri().icerik_giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
+                     if sayi[0]==0:#karantinada değilse 14 gün geçmişse
+                            data=str(data).lstrip("b'")
+                            data=data.rstrip("'")
+                            if float(data)>=37.5:
+                                #vucut ısısı 37.5 üzerinde ise
 
-                 if sayi[0]==0:#karantinada değilse 14 gün geçmişse
-                        data=str(data).lstrip("b'")
-                        data=data.rstrip("'")
-                        if float(data)>=37.5:
-                            #vucut ısısı 37.5 üzerinde ise iptal alanı=1
+                                self.vucutisi_lcd.setStyleSheet("color: rgb(255, 0, 0);")
+                                yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
+                                deger=yenigiris.icerik_giris_iptal_kaydet()
+                                self.label_2.setText("Giriş İptal Kaydı Yapıldı")
 
-                            self.vucutisi_lcd.setStyleSheet("color: rgb(255, 0, 0);")
-                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
-                            deger=yenigiris.icerik_giris_iptal_kaydet()
-                            self.label_2.setText("Giriş İptal Kaydı Yapıldı")
+                            elif float(data)<37.5:#ısı uygunsa veritabanı icerik_girisler kaydet
+                                self.vucutisi_lcd.setStyleSheet("color: rgb(4, 211, 53);")
+                                yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
+                                deger=yenigiris.giris_kaydet()
+                                self.label_2.setText("Giriş Kaydı Yapıldı")
+                                giris_sayi=giris_isleri.Giris_islemleri().giris_yapan_kisi_sayisi()
+                                self.giris_sayisi_lcd.display(giris_sayi[0])
+                                print(deger)
+                            else:
+                                self.vucutisi_lcd.setStyleSheet("color: rgb(0, 0, 255);")
 
-                        elif float(data)<37.5:#ısı uygunsa veritabanı girisler_girisler kaydet
-                            self.vucutisi_lcd.setStyleSheet("color: rgb(4, 211, 53);")
-                            yenigiris=giris_isleri.Giris_islemleri(float(data), self.kisi_id)
-                            deger=yenigiris.giris_kaydet()
-                            self.label_2.setText("Giriş Kaydı Yapıldı")
-                            giris_sayi=giris_isleri.Giris_islemleri().giris_yapan_kisi_sayisi()
-                            self.giris_sayisi_lcd.display(giris_sayi[0])
-                            print(deger)
-                        else:
-                            self.vucutisi_lcd.setStyleSheet("color: rgb(0, 0, 255);")
+                            self.vucutisi_lcd.display(data)
+                            data=None
+                            self.temizle()
 
-                        self.vucutisi_lcd.display(data)
-                        data=None
+                     else:
+                        self.vucutisi_lcd.display(0)
+                        self.label_2.setText("14 gün Geçmediği için Giriş Yapılamaz")
                         self.temizle()
-
-                 else:
-                    self.vucutisi_lcd.display(0)
-                    self.label_2.setText("14 gün Geçmediği için Giriş Yapılamaz")
-                    self.temizle()
 
     def temizle(self):
         time.sleep(3)

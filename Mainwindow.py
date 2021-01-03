@@ -334,7 +334,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
      try:
         deger=kisi.Kisi.kisi_sil(int(self.kisi_id_label.text()))
         QtWidgets.QMessageBox.about(self.centralwidget, "Bursa_MKC", deger)
-        if deger=="Kayıt Silindi":self.temizle()
+        if deger=="Kayıt Silindi":
+            nesne = foto_ogren.foto_ogrenme()  # kayıt silinince fotoları öğrenme dosyası güncelle
+            self.temizle()
      except ValueError:
           QtWidgets.QMessageBox.about(self.centralwidget, "Uyarı", "Silmek için Öcelikle Tc Numarası ile kayıdı arayınız")
      except:
