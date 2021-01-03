@@ -245,7 +245,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         self.vt_foto_adi = str(f) + '.' + str(sampleNum) + ".jpg"  # veritabanına yeni kayıt ismi
 
-        #cv2.imwrite("vt_fotolar/"+self.vt_foto_adi, img)
+        #son fotoyu arayüzler için kaydeder
         cv2.imwrite("web_arayuz/static/vt_fotolar/" + self.vt_foto_adi, img)
         cam.release()
         cv2.destroyAllWindows()
@@ -256,21 +256,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.foto_label.setPixmap(pixmap_resized)
         
 
-     
-        
-        
-        
-        
-       
-        
+    def dene(self):
+         self.a=5
 
         
-    def kapi_giris_ac(self):
+    def kapi_giris_ac(self):#kapı giriş ekranını açar
 
         self.kapi_giris_pencere = kapi_giris_window.Ui_kapigiris()
         self.kapi_giris_pencere.show()
 
-    def tarih_raporla_ac(self):
+    def tarih_raporla_ac(self):#Giriş raporu ekranını açar
         self.Tarih_giris_rapor_pencere.show()
 
     def udp_ayar_ac(self):
