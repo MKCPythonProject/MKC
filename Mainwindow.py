@@ -256,8 +256,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.foto_label.setPixmap(pixmap_resized)
         
 
-    def dene(self):
-         self.a=5
 
         
     def kapi_giris_ac(self):#kapı giriş ekranını açar
