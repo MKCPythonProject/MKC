@@ -226,14 +226,22 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sampleNum=0
         while(True):#çekmeye başla
             ret, img = cam.read()
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            genislik=int(img.shape[1]*90/100)
+            yukseklik = int(img.shape[0] * 90 / 100)
+            dim=(genislik,yukseklik)
+            resized=cv2.resize(img,dim,interpolation=cv2.INTER_AREA)
+            img=resized
+            gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
             faces = detector.detectMultiScale(gray, 1.3, 5)
             for (x,y,w,h) in faces:
-                cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
-                sampleNum=sampleNum+1
-                self.foto_adi="kisi_fotolar/"+ str(f) +'.'+ str(sampleNum) +".jpg"
-                cv2.imwrite(self.foto_adi, gray[y:y+h,x:x+w])
-                cv2.imshow('YUZ TARAMA VT KAYIT',img)
+                k=self.it_contains_eyes(img,gray,x,y,w,h)#tam bir kontrol yapılıyor göz burun smile
+
+                if(k==True):#eğer burun gözde tanıyabildiyse
+                    cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+                    sampleNum=sampleNum+1
+                    self.foto_adi="kisi_fotolar/"+ str(f) +'.'+ str(sampleNum) +".jpg"
+                    cv2.imwrite(self.foto_adi, gray[y:y+h,x:x+w])
+                    cv2.imshow('YUZ TARAMA VT KAYIT',img)
 
 
             if cv2.waitKey(100) & 0xFF == ord('q'):
@@ -249,7 +257,6 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         cv2.imwrite("web_arayuz/static/vt_fotolar/" + self.vt_foto_adi, img)
         cam.release()
         cv2.destroyAllWindows()
-        nesne=foto_ogren.foto_ogrenme()#fotoları öğrenmeye gönder
         #labela foto yerleştir
         pixmap = QtGui.QPixmap("web_arayuz/static/vt_fotolar/"+ self.vt_foto_adi)
         pixmap_resized=pixmap.scaled(250, 250, QtCore.Qt.IgnoreAspectRatio)
@@ -282,13 +289,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 int(self.tckimliktxt.text()),int(self.teltxt.text()),  self.vt_foto_adi, tip)
                 deger=yenikisi.kisi_kaydet()
                 QtWidgets.QMessageBox.about(self.centralwidget, "Bursa_MKC", deger)
-                if deger=="Kayıt Başarılı":  self.temizle()
+                if deger=="Kayıt Başarılı":
+                    self.temizle()
+                    nesne = foto_ogren.foto_ogrenme()  # fotoları öğrenmeye gönder
             else:#kayıt değitirme
                 yenikisi=kisi.Kisi(self.adsoyadtxt.text(),
                 int(self.tckimliktxt.text()),int(self.teltxt.text()), self.vt_foto_adi, tip,int(self.kisi_id_label.text()))
                 deger=yenikisi.kisi_degistir()
                 QtWidgets.QMessageBox.about(self.centralwidget, "Bursa_MKC", deger)
-                if deger=="Kayıt Değiştirildi":  self.temizle()     
+                if deger=="Kayıt Değiştirildi":
+                    self.temizle()
+                    nesne = foto_ogren.foto_ogrenme()  # fotoları öğrenmeye gönder
         except ValueError:
              QtWidgets.QMessageBox.about(  self.centralwidget, "Uyarı", "Telefon ve Tc Kimlik Sayı Olmalı")
         except:
@@ -342,6 +353,44 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
      except:
           QtWidgets.QMessageBox.about(self.centralwidget, "Uyarı", "Bilinmeyen Hata")
 
+
+    def it_contains_eyes(self,renkli, gray, x, y, w, h):#yüzü tam tanıtnıtmak için kontrol göz burun smile
+         eyeCascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+         smileCascade = cv2.CascadeClassifier('haarcascade_smile.xml')
+         noseCascade = cv2.CascadeClassifier('haarcascade_nose.xml')
+         x_gray = gray[y:y + h, x:x + w]
+
+         gozler = eyeCascade.detectMultiScale(
+             x_gray,
+             scaleFactor=1.05,
+             minNeighbors=3,
+         )
+         count = 0
+         for (ex, ey, ew, eh) in gozler:
+             count += 1
+
+
+
+
+         smiles = smileCascade.detectMultiScale(
+             x_gray,
+             scaleFactor=1.5,
+             minNeighbors=5,
+         )
+
+
+
+         noses = noseCascade.detectMultiScale(
+             x_gray,
+             scaleFactor=1.5,
+             minNeighbors=5,
+         )
+
+
+         if (count>1 or len(smiles) > 0 or len(noses)):
+             return  True
+         else:
+             return False
 
 if __name__ == "__main__":
     import sys

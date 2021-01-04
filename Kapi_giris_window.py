@@ -11,6 +11,8 @@ import numpy as np
 import Kisiler as kisi
 from datetime import datetime
 from datetime import date
+
+
 class Ui_kapigiris(QtWidgets.QMainWindow):
     kisi_id=0
     def __init__(self):
@@ -29,7 +31,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.label.setFont(font)
         self.label.setObjectName("label")
         self.adsoyadtxt = QtWidgets.QLabel(self.centralwidget)
-        self.adsoyadtxt.setGeometry(QtCore.QRect(160, 120, 281, 16))
+        self.adsoyadtxt.setGeometry(QtCore.QRect(160, 120, 288, 24))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.adsoyadtxt.setFont(font)
@@ -55,7 +57,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.vucutisi_lcd.setProperty("intValue", 0)
         self.vucutisi_lcd.setObjectName("vucutisi_lcd")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(60, 430, 451, 21))
+        self.label_2.setGeometry(QtCore.QRect(60, 430, 451, 25))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(False)
@@ -119,32 +121,58 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                  recognizer.read('ogrenme/ogrenme.yml')
                  cascadePath = "haarcascade_frontalface_default.xml"
                  faceCascade = cv2.CascadeClassifier(cascadePath)
+                #goz araması için
+                 goz_recognizer = cv2.face.LBPHFaceRecognizer_create()
+                 goz_recognizer.read('ogrenme/goz_ogrenme.yml')
+                 goz_cascadePath = "haarcascade_eye.xml"
+                 goz_Cascade = cv2.CascadeClassifier(goz_cascadePath)
+
                  cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
                  font = cv2.FONT_HERSHEY_SIMPLEX
+                 kackezbaktin=0
                  while True:
+                     kackezbaktin+=1;
                      ret, im = cam.read()
+                     genislik = int(im.shape[1] * 90 / 100)
+                     yukseklik = int(im.shape[0] * 90 / 100)
+                     dim = (genislik, yukseklik)
+                     resized = cv2.resize(im, dim, interpolation=cv2.INTER_AREA)
+                     im=resized
                      gray = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
                      faces = faceCascade.detectMultiScale(gray, 1.2, 5)
+                     gozler=goz_Cascade.detectMultiScale(gray,1.05,3)
                      kontrol = False
                      for (x, y, w, h) in faces:
-                         cv2.rectangle(im, (x, y), (x + w, y + h), (150, 0, 0), 2)
-                         id, conf = recognizer.predict(gray[y:y + h, x:x + w])
-                         if id != None:
-                             self.kisi_ad_soyad = kisi.Kisi.kisi_ad_getir(id)
-                             if self.kisi_ad_soyad=="yok":
-                               self.label_2.setText("Aradığınız Kişi Yok kayıt edin veya Bilgilerini Güncelleyin")
-                             self.kisi_id=id
-                             cv2.putText(im, self.kisi_ad_soyad, (x + 5, y + h - 5), font, 0.5, (255, 0, 255), 1,
-                                         cv2.LINE_AA)
-                             kontrol = True
-                             time.sleep(3)  # kişiyi tanıyınca 3 saniye bekle çık
-                             break
+                         k = self.it_contains_eyes(im, gray, x, y, w, h)#cameranın baktığı yüzmü
+                         if (k==True):
+                             cv2.rectangle(im, (x, y), (x + w, y + h), (200, 0, 0), 2)
+                             id, conf = recognizer.predict(gray[y:y + h, x:x + w])
+                             for (ex, ey, ew, eh) in gozler:#gözlerde dön bak bakılm id ve doğruluğu al
+                                 g_id,g_conf=goz_recognizer.predict(gray[ey:ey + eh, ex:ex + ew])
+                                # kontrol için yazdım print("id=" +str(id) + "g_id=" +str(g_id) + "conf=" + str(conf) + " g= " + str(g_conf))
+                                 # hem göz id hem yüz id hem göz doğrıluk oranı ve hemde yüz doğruluk oranı yaptım
+                                 if (id != None and g_id!=None and id==g_id and conf<50 and g_conf<120):
 
+                                     self.kisi_ad_soyad = kisi.Kisi.kisi_ad_getir(id)
+                                     self.kisi_id=id
+
+                                     cv2.putText(im, self.kisi_ad_soyad, (x + 5, y + h - 5), font, 0.5, (255, 0, 255), 1,
+                                                 cv2.LINE_AA)
+                                     kontrol = True
+                                     time.sleep(3)  # kişiyi tanıyınca 3 saniye bekle çık
+                                     break
+                     if kontrol == False:
+
+                         cv2.putText(im, "Taninmaya Calisiliyor", (0,20), font, 0.5, (255, 0, 255), 1,
+                                     cv2.LINE_AA)
                      cv2.imshow('KAPI GİRİŞ', im);
 
-                     if (cv2.waitKey(1) == ord('q') or kontrol == True):
+                     if (cv2.waitKey(1) == ord('q') or kontrol == True or kackezbaktin==20):
                          if kontrol == True: time.sleep(2)
                          break
+                 if kackezbaktin==20:
+                     self.kisi_ad_soyad="Tanınmıyor"
+                     self.label_2.setText("Sisteme kayıtlı Olmadığınız için Giriş Yapamassınız")
                  cam.release()
                  cv2.destroyAllWindows()##kamera serbest
 
@@ -158,7 +186,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
 
 
 
-                 if self.kisi_ad_soyad!="yok":
+                 if self.kisi_ad_soyad!="Tanınmıyor":
                      sayi=giris_isleri.Giris_islemleri().icerik_giris_iptal_sorgula(self.kisi_id)# girişi iptalmi
 
                      if sayi[0]==0:#karantinada değilse 14 gün geçmişse
@@ -179,7 +207,7 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
                                 self.label_2.setText("Giriş Kaydı Yapıldı")
                                 giris_sayi=giris_isleri.Giris_islemleri().giris_yapan_kisi_sayisi()
                                 self.giris_sayisi_lcd.display(giris_sayi[0])
-                                print(deger)
+
                             else:
                                 self.vucutisi_lcd.setStyleSheet("color: rgb(0, 0, 255);")
 
@@ -198,9 +226,44 @@ class Ui_kapigiris(QtWidgets.QMainWindow):
         self.adsoyadtxt.clear()
         self.foto_label.clear()
         self.vucutisi_lcd.display(0)
+        self.kisi_id=0
         self.sock.close()
-        
 
+    def it_contains_eyes(self, frame, gray, x, y, w, h):  # yüzü tam tanıtnıtmak için kontrol göz burun smile
+        eyeCascade = cv2.CascadeClassifier('haarcascade_eye.xml')
+        smileCascade = cv2.CascadeClassifier('haarcascade_smile.xml')
+        noseCascade = cv2.CascadeClassifier('haarcascade_nose.xml')
+        roi_gray = gray[y:y + h, x:x + w]
+
+        eyes = eyeCascade.detectMultiScale(
+            roi_gray,
+            scaleFactor=1.05,
+            minNeighbors=3,
+            minSize=(20, 20)
+        )
+        count = 0
+        for (ex, ey, ew, eh) in eyes:
+            count += 1
+        if count > 1:
+            return True
+
+        smiles = smileCascade.detectMultiScale(
+            roi_gray,
+            scaleFactor=1.5,
+            minNeighbors=5,
+            minSize=(3, 3)
+        )
+        if len(smiles) > 0: return True
+
+        noses = noseCascade.detectMultiScale(
+            roi_gray,
+            scaleFactor=1.5,
+            minNeighbors=5,
+            minSize=(3, 3)
+        )
+        if len(noses) > 0: return True
+
+        return False
 
     def closeEvent(self,event):#soketi kapatıyoz
         self.t1.kill()

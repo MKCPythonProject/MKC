@@ -85,6 +85,8 @@ class Kisi():
             for i in range(1,10):
                 os.remove("kisi_fotolar/" +str(kisi_id) +"."+str(i)+".jpg")
             os.remove("web_arayuz/static/vt_fotolar/"+str(kisi_id) +".9.jpg")
+            os.remove("ogrenme/goz_ogrenme.yml")
+            os.remove("ogrenme/ogrenme.yml")
         except:
             kontrol="!!KAYIT SİLİNEMEDİ.Bilinmeyen Hata."
         return kontrol
